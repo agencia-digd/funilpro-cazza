@@ -858,6 +858,26 @@ function bCls(real, metaPct) {
   return 'r';
 }
 
+// Calcula metas em cascata (padrão) ou flat (tradicional)
+function calcMetas(lead, metaType) {
+  const m = METAS[metaType];
+  if (metaType === 'tradicional') {
+    // Tradicional: todas as % são sobre o lead
+    return {
+      mAtend: Math.round(lead * m.atend),
+      mAgend: Math.round(lead * m.agend),
+      mVisit: Math.round(lead * m.visit),
+      mVend:  Math.round(lead * m.vend)
+    };
+  }
+  // Padrão: cascata — cada etapa é % da anterior
+  const mAtend = Math.round(lead * m.atend);
+  const mAgend = Math.round(mAtend * m.agend);
+  const mVisit = Math.round(mAgend * m.visit);
+  const mVend  = Math.round(mVisit * m.vend);
+  return { mAtend, mAgend, mVisit, mVend };
+}
+
 // ---- CSV PARSER ----
 function parseCSV(text) {
   const rows = [];
@@ -1106,9 +1126,8 @@ function renderGeral() {
   document.getElementById('gVend').value = dg.vend || '';
 
   const {lead=0,atend=0,agend=0,visit=0,vend=0} = dg;
+  const {mAtend,mAgend,mVisit,mVend} = calcMetas(lead, metaG);
   const m = METAS[metaG];
-  const mAtend = Math.round(lead*m.atend), mAgend = Math.round(lead*m.agend);
-  const mVisit = Math.round(lead*m.visit), mVend  = Math.round(lead*m.vend);
 
   const pAtend = p(atend,mAtend||1), pAgend = p(agend,mAgend||1);
   const pVisit = p(visit,mVisit||1), pVend  = p(vend,mVend||1);
@@ -1194,8 +1213,7 @@ function renderCorretores() {
   document.getElementById('cgrid').innerHTML = corretores.map(c => {
     const d = getDC(c);
     const {lead=0,atend=0,agend=0,visit=0,vend=0} = d;
-    const mAtend=Math.round(lead*m.atend), mAgend=Math.round(lead*m.agend);
-    const mVisit=Math.round(lead*m.visit), mVend=Math.round(lead*m.vend);
+    const {mAtend,mAgend,mVisit,mVend} = calcMetas(lead, metaC);
 
     const rows = [
       {lbl:'Lead',    real:lead,  meta:lead,   pR:100,               mPct:1},
