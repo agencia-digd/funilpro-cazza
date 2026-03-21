@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FunilPro — Cazza da Praia</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --azul:   #0F1B2E;
+  --azul2:  #1a2e4a;
+  --azul3:  #243d60;
+  --ouro:   #C4A86A;
+  --ouro2:  #ddc48a;
+  --areia:  #F5F0E8;
+  --areia2: #EDE5D6;
+  --branco: #FFFFFF;
+  --verde:  #2d7a50;
+  --verd2:  #e6f4ed;
+  --verm:   #8a2020;
+  --verm2:  #fae8e8;
+  --larj:   #8a5a20;
+  --larj2:  #fdf3e0;
+  --text:   #1a1a1a;
+  --muted:  #6b7a8d;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--areia);
+  display: flex;
+  min-height: 100vh;
+  color: var(--text);
+}
+
+/* ======= SIDEBAR ======= */
+#sidebar {
+  width: 230px;
+  min-height: 100vh;
+  background: var(--azul);
+  position: fixed;
+  top:0; left:0; bottom:0;
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  border-right: 1px solid rgba(196,168,106,0.15);
+}
+
+.sb-logo {
+  padding: 28px 24px 22px;
+  border-bottom: 1px solid rgba(196,168,106,0.15);
+}
+
+.sb-brand {
+  font-family: 'Playfair Display', serif;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--ouro);
+  margin-bottom: 6px;
+}
+
+.sb-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--branco);
+  line-height: 1.1;
+  letter-spacing: 1px;
+}
+
+.sb-creci {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: rgba(196,168,106,0.5);
+  letter-spacing: 1.5px;
+  margin-top: 8px;
+  text-transform: uppercase;
+}
+
+.sb-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(196,168,106,0.3), transparent);
+  margin: 0 24px;
+}
+
+.sb-nav { padding: 12px 0; flex: 1; }
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 24px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+  cursor: pointer;
+  border-left: 2px solid transparent;
+  transition: all 0.2s;
+}
+
+.nav-item:hover {
+  color: rgba(255,255,255,0.75);
+  background: rgba(196,168,106,0.06);
+}
+
+.nav-item.active {
+  color: var(--ouro);
+  border-left-color: var(--ouro);
+  background: rgba(196,168,106,0.08);
+}
+
+.nav-icon { font-size: 14px; opacity: 0.7; }
+
+.sb-footer {
+  padding: 18px 24px;
+  border-top: 1px solid rgba(196,168,106,0.12);
+}
+
+.sf-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: rgba(255,255,255,0.25);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.sf-value {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ouro);
+  letter-spacing: 1px;
+}
+
+/* ======= MAIN ======= */
+#main { margin-left: 230px; flex: 1; min-height: 100vh; }
+
+.page { display: none; }
+.page.active { display: block; animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+
+/* ======= PAGE HEADER ======= */
+.ph {
+  padding: 32px 40px 0;
+  border-bottom: 1px solid var(--areia2);
+  margin-bottom: 0;
+  padding-bottom: 24px;
+}
+
+.ph-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--ouro);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.ph h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--azul);
+  letter-spacing: 0.5px;
+}
+
+.ph p {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--muted);
+  margin-top: 3px;
+  letter-spacing: 0.3px;
+}
+
+/* ======= PERIOD BAR ======= */
+.pbar {
+  padding: 20px 40px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.months { display: flex; gap: 6px; flex-wrap: wrap; }
+
+.mbtn {
+  padding: 5px 14px;
+  border-radius: 2px;
+  border: 1px solid var(--areia2);
+  background: var(--branco);
+  font-family: 'Outfit', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.mbtn:hover { border-color: var(--ouro); color: var(--azul); }
+.mbtn.active { background: var(--azul); color: var(--ouro); border-color: var(--azul); font-weight: 500; }
+
+.meta-tog { display: flex; align-items: center; gap: 8px; }
+
+.meta-tog label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.metabtn {
+  padding: 5px 14px;
+  border-radius: 2px;
+  border: 1px solid var(--areia2);
+  background: var(--branco);
+  font-family: 'Outfit', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.metabtn.active { background: var(--azul); color: var(--ouro); border-color: var(--azul); }
+
+/* ======= SECTION LABEL ======= */
+.slabel {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--ouro);
+  padding: 24px 40px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.slabel::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(196,168,106,0.3), transparent);
+}
+
+/* ======= INPUT SECTION ======= */
+.input-section {
+  margin: 0 40px 4px;
+  background: var(--branco);
+  border: 1px solid var(--areia2);
+  border-radius: 4px;
+  padding: 20px 24px;
+}
+
+.inputs-row { display: flex; gap: 16px; flex-wrap: wrap; }
+
+.input-field { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 90px; }
+
+.input-field label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--muted);
+}
+
+.input-field input {
+  padding: 10px 12px;
+  border: 1px solid var(--areia2);
+  border-radius: 2px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--azul);
+  background: var(--areia);
+  outline: none;
+  transition: border-color 0.15s;
+  width: 100%;
+}
+
+.input-field input:focus {
+  border-color: var(--ouro);
+  background: var(--branco);
+}
+
+/* ======= RESUMO CARDS ======= */
+.resumo { display: flex; gap: 12px; padding: 0 40px; flex-wrap: wrap; }
+
+.rc {
+  background: var(--branco);
+  border: 1px solid var(--areia2);
+  border-radius: 4px;
+  padding: 18px 20px;
+  flex: 1;
+  min-width: 110px;
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+}
+
+.rc:hover { box-shadow: 0 4px 20px rgba(15,27,46,0.08); }
+
+.rc::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+}
+
+.rc.lead::before    { background: var(--azul3); }
+.rc.atend::before   { background: #3a7fb5; }
+.rc.agend::before   { background: var(--ouro); }
+.rc.visit::before   { background: #c4864a; }
+.rc.vend::before    { background: none; }
+.rc.vend            { background: var(--azul); border-color: var(--azul); }
+
+.rc-ico { position: absolute; top: 14px; right: 16px; font-size: 16px; opacity: 0.3; }
+.rc-lbl {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.rc.vend .rc-lbl { color: rgba(196,168,106,0.5); }
+
+.rc-val {
+  font-family: 'Outfit', sans-serif;
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--azul);
+  margin-bottom: 4px;
+}
+.rc.vend .rc-val { color: var(--ouro); }
+
+.rc-meta {
+  font-size: 11px;
+  font-weight: 300;
+  color: var(--muted);
+  margin-bottom: 10px;
+  letter-spacing: 0.3px;
+}
+.rc.vend .rc-meta { color: rgba(255,255,255,0.3); }
+
+.bdg {
+  display: inline-block;
+  padding: 3px 9px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  border-radius: 2px;
+}
+.bdg.g  { background: var(--verd2); color: var(--verde); }
+.bdg.r  { background: var(--verm2); color: var(--verm); }
+.bdg.o  { background: var(--larj2); color: var(--larj); }
+
+/* ======= FUNIL VISUAL ======= */
+.fwrap {
+  margin: 20px 40px 24px;
+  background: var(--branco);
+  border: 1px solid var(--areia2);
+  border-radius: 4px;
+  padding: 24px 28px;
+}
+
+.fwrap-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.fwrap-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--azul);
+  letter-spacing: 0.5px;
+}
+
+.mibadge {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  background: var(--areia);
+  color: var(--ouro);
+  padding: 4px 12px;
+  border-radius: 2px;
+  border: 1px solid rgba(196,168,106,0.3);
+  text-transform: uppercase;
+}
+
+.farea { display: flex; flex-direction: column; align-items: center; }
+.frow  { display: flex; flex-direction: column; align-items: center; width: 100%; }
+
+.ftrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 36px;
+  height: 64px;
+}
+
+.ft-lead  { background: var(--azul);  clip-path: polygon(0 0,100% 0,97% 100%,3% 100%); width: 100%; }
+.ft-atend { background: var(--azul2); clip-path: polygon(0 0,100% 0,97% 100%,3% 100%); width: 94%; }
+.ft-agend { background: #8a6a20;      clip-path: polygon(0 0,100% 0,97% 100%,3% 100%); width: 88%; }
+.ft-visit { background: #6a4010;      clip-path: polygon(0 0,100% 0,97% 100%,3% 100%); width: 82%; }
+.ft-vend  { background: #3d2008;      clip-path: polygon(0 0,100% 0,97% 100%,3% 100%); width: 76%; }
+
+.farrow { width:0; height:0; border-left:11px solid transparent; border-right:11px solid transparent; }
+.fa-lead  { border-top: 10px solid var(--azul); }
+.fa-atend { border-top: 10px solid var(--azul2); }
+.fa-agend { border-top: 10px solid #8a6a20; }
+.fa-visit { border-top: 10px solid #6a4010; }
+
+.ft-lbl {
+  font-family: 'Outfit', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.9);
+  letter-spacing: 0.5px;
+}
+
+.ft-right { display: flex; align-items: center; gap: 16px; }
+
+.ft-num {
+  font-family: 'Outfit', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+  text-align: right;
+}
+
+.ft-of {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: rgba(255,255,255,0.35);
+  text-align: right;
+  letter-spacing: 0.5px;
+}
+
+.ftbdg {
+  padding: 3px 10px;
+  border-radius: 2px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+.ftbdg.g { background: rgba(46,160,80,0.3);  color: #9fd4b0; }
+.ftbdg.r { background: rgba(200,50,50,0.35); color: #f4a0a0; }
+.ftbdg.o { background: rgba(196,168,106,0.25); color: var(--ouro2); }
+
+.ft-meta {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: rgba(255,255,255,0.3);
+  text-align: center;
+  margin-top: 2px;
+  letter-spacing: 0.5px;
+}
+
+/* ======= POR CORRETOR ======= */
+.cgrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  padding: 0 40px 40px;
+}
+
+@media(max-width:1100px) { .cgrid { grid-template-columns: repeat(2,1fr); } }
+@media(max-width:700px)  { .cgrid { grid-template-columns: 1fr; } }
+
+.ccard {
+  background: var(--branco);
+  border: 1px solid var(--areia2);
+  border-radius: 4px;
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+}
+
+.ccard:hover { box-shadow: 0 4px 20px rgba(15,27,46,0.1); }
+
+.ccard-top {
+  height: 3px;
+  background: linear-gradient(90deg, var(--ouro), var(--ouro2));
+}
+
+.ccard.ns .ccard-top { background: var(--areia2); }
+
+.cc-head {
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--areia2);
+}
+
+.cc-left { display: flex; align-items: center; gap: 10px; }
+
+.av {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--areia);
+}
+
+.av-0 { background: var(--azul); }
+.av-1 { background: #1a4a3a; }
+.av-2 { background: #1a3a1a; }
+.av-3 { background: #2a1a4a; }
+.av-4 { background: #4a1a1a; }
+.av-5 { background: #3a2a0a; }
+
+.ccname {
+  font-family: 'Outfit', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--azul);
+  letter-spacing: 0.3px;
+}
+
+.ccsub {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: var(--muted);
+  margin-top: 2px;
+  letter-spacing: 0.5px;
+}
+
+.ccvend {
+  font-family: 'Outfit', sans-serif;
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--ouro);
+  line-height: 1;
+  text-align: right;
+}
+.ccvend.z { color: var(--areia2); }
+.ccvend sup {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--muted);
+  letter-spacing: 0.5px;
+}
+
+/* CARD TABLE */
+.cc-tbl { padding: 2px 0 0; }
+
+.ccrow {
+  display: grid;
+  grid-template-columns: 78px 1fr 1fr 1fr 1fr;
+  align-items: center;
+  padding: 7px 18px;
+  border-bottom: 1px solid var(--areia);
+  font-size: 12px;
+}
+.ccrow:last-child { border-bottom: none; }
+
+.rl { font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 400; color: var(--muted); }
+.rh { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.8px; text-transform: uppercase; color: #ccc; text-align: right; }
+.rv { font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 600; color: var(--azul); text-align: right; }
+.rm { font-family: 'DM Mono', monospace; font-size: 11px; color: #ccc; text-align: right; }
+.rp { text-align: right; }
+.rmt { font-family: 'DM Mono', monospace; font-size: 10px; color: #bbb; text-align: right; }
+
+.ps { display: inline-block; padding: 2px 6px; border-radius: 2px; font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500; }
+.ps.g { background: var(--verd2); color: var(--verde); }
+.ps.r { background: var(--verm2); color: var(--verm); }
+.ps.o { background: var(--larj2); color: var(--larj); }
+
+/* INPUTS IN CARD */
+.cc-inp {
+  padding: 12px 18px 16px;
+  border-top: 1px solid var(--areia2);
+  background: var(--areia);
+}
+
+.cc-inp-t {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.cc-inp-g { display: grid; grid-template-columns: repeat(5,1fr); gap: 8px; }
+
+.cif label {
+  font-family: 'DM Mono', monospace;
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #bbb;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.cif input {
+  width: 100%;
+  padding: 6px 6px;
+  border: 1px solid var(--areia2);
+  border-radius: 2px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--azul);
+  text-align: center;
+  outline: none;
+  transition: border-color 0.15s;
+  background: var(--branco);
+}
+
+.cif input:focus { border-color: var(--ouro); }
+
+/* MANAGE */
+.msec {
+  margin: 0 40px 16px;
+  background: var(--branco);
+  border: 1px solid var(--areia2);
+  border-radius: 4px;
+  padding: 18px 22px;
+}
+
+.mtitle {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+.addrow { display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+
+.addrow input {
+  flex: 1;
+  min-width: 160px;
+  padding: 9px 14px;
+  border: 1px solid var(--areia2);
+  border-radius: 2px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px;
+  color: var(--azul);
+  outline: none;
+  transition: border-color 0.15s;
+  background: var(--areia);
+}
+
+.addrow input:focus { border-color: var(--ouro); background: var(--branco); }
+
+.btnadd {
+  padding: 9px 20px;
+  background: var(--azul);
+  color: var(--ouro);
+  border: 1px solid var(--azul);
+  border-radius: 2px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btnadd:hover { background: var(--azul2); }
+
+.chips { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--areia);
+  border: 1px solid var(--areia2);
+  border-radius: 2px;
+  padding: 4px 10px 4px 8px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--azul);
+}
+
+.xbtn {
+  cursor: pointer;
+  color: #ccc;
+  font-size: 14px;
+  background: none;
+  border: none;
+  font-family: 'Outfit', sans-serif;
+  transition: color 0.15s;
+  line-height: 1;
+}
+.xbtn:hover { color: var(--verm); }
+
+/* EMPTY */
+.empty-state {
+  padding: 56px;
+  text-align: center;
+  color: var(--muted);
+  font-family: 'Outfit', sans-serif;
+  font-size: 16px;
+  font-weight: 300;
+  font-style: italic;
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div class="sb-logo">
+    <div class="sb-brand">Cazza da Praia</div>
+    <div class="sb-name">FUNIL<br>PRO</div>
+    <div class="sb-creci">CRECI 33009-J · LITORAL NORTE SP</div>
+  </div>
+
+  <div class="sb-nav">
+    <div class="nav-item active" onclick="showPage('geral',this)">
+      <span class="nav-icon">◈</span> Funil Geral
+    </div>
+    <div class="nav-item" onclick="showPage('corretor',this)">
+      <span class="nav-icon">◉</span> Por Corretor
+    </div>
+  </div>
+
+  <div class="sb-footer">
+    <div class="sf-label">Período</div>
+    <div class="sf-value" id="sfv">—</div>
+    <div style="margin-top:14px;display:flex;align-items:center;gap:8px;">
+      <button onclick="fetchDados()" style="padding:5px 12px;background:rgba(196,168,106,0.15);border:1px solid rgba(196,168,106,0.3);border-radius:2px;color:var(--ouro);font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;">↻ Sync</button>
+      <span id="syncStatus" style="font-family:'DM Mono',monospace;font-size:9px;color:rgba(196,168,106,0.6);letter-spacing:0.5px;"></span>
+    </div>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div id="main">
+
+  <!-- ====== FUNIL GERAL ====== -->
+  <div id="page-geral" class="page active">
+    <div class="ph">
+      <div class="ph-eyebrow">Visão Consolidada</div>
+      <h1>Funil Geral</h1>
+      <p>Performance da equipe · Litoral Norte SP</p>
+    </div>
+
+    <div class="pbar">
+      <div class="months" id="mG"></div>
+      <div class="meta-tog">
+        <label>Meta ·</label>
+        <button class="metabtn active" id="bPG" onclick="setMeta('padrao')">Padrão</button>
+        <button class="metabtn" id="bTG" onclick="setMeta('tradicional')">Tradicional</button>
+      </div>
+    </div>
+
+    <div class="slabel">Dados do Mês</div>
+    <div class="input-section">
+      <div class="inputs-row">
+        <div class="input-field"><label>Lead</label><input type="number" id="gLead" placeholder="0" readonly></div>
+        <div class="input-field"><label>Atendeu</label><input type="number" id="gAtend" placeholder="0" readonly></div>
+        <div class="input-field"><label>Agendou</label><input type="number" id="gAgend" placeholder="0" readonly></div>
+        <div class="input-field"><label>Visitou</label><input type="number" id="gVisit" placeholder="0" readonly></div>
+        <div class="input-field"><label>Vendas</label><input type="number" id="gVend" placeholder="0" readonly></div>
+      </div>
+    </div>
+
+    <div class="slabel">Resumo do Mês</div>
+    <div class="resumo" id="resumo"></div>
+
+    <div class="fwrap">
+      <div class="fwrap-head">
+        <div class="fwrap-title">Funil da Equipe</div>
+        <span class="mibadge" id="mlbl">META PADRÃO</span>
+      </div>
+      <div class="farea" id="farea"></div>
+    </div>
+  </div>
+
+  <!-- ====== POR CORRETOR ====== -->
+  <div id="page-corretor" class="page">
+    <div class="ph">
+      <div class="ph-eyebrow">Desempenho Individual</div>
+      <h1>Por Corretor</h1>
+      <p>Funil de cada corretor · Litoral Norte SP</p>
+    </div>
+
+    <div class="pbar">
+      <div class="months" id="mC"></div>
+      <div class="meta-tog">
+        <label>Meta ·</label>
+        <button class="metabtn active" id="bPC" onclick="setMetaC('padrao')">Padrão</button>
+        <button class="metabtn" id="bTC" onclick="setMetaC('tradicional')">Tradicional</button>
+      </div>
+    </div>
+
+    <div class="slabel">Corretores</div>
+    <div class="msec">
+      <div class="chips" id="chips"></div>
+    </div>
+
+    <div class="slabel">Funil Individual</div>
+    <div class="cgrid" id="cgrid"></div>
+  </div>
+
+</div>
+
+<script>
+const SHEET_ID = '1BREbToIdX6sU8kmKbn-0DUzhAxsg4LnmavPiXPfZtMA';
+const GID_FUNIL = '671788295';
+const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID_FUNIL}`;
+const REFRESH_MS = 3 * 60 * 1000; // auto-refresh a cada 3 min
+
+const MESES = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+
+const METAS = {
+  padrao:      { atend:0.60, agend:0.33,  visit:0.80,   vend:0.125 },
+  tradicional: { atend:0.60, agend:0.198, visit:0.1584, vend:0.019 }
+};
+
+let metaG = 'padrao', metaC = 'padrao';
+let mesG = 2, mesC = 2;
+let corretores = [];
+let dadosGerais = {};
+let mesesDisponiveis = [];
+let loading = false;
+
+function p(a,b) { return b>0?(a/b*100):0; }
+function f(v)   { return v.toFixed(1)+'%'; }
+function ini(s) { return s.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2); }
+
+function bCls(real, metaPct) {
+  if (real >= metaPct*100) return 'g';
+  if (real >= metaPct*60)  return 'o';
+  return 'r';
+}
+
+// ---- CSV PARSER ----
+function parseCSV(text) {
+  const rows = [];
+  let cur = '', inQ = false, row = [];
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (inQ) {
+      if (ch === '"' && text[i+1] === '"') { cur += '"'; i++; }
+      else if (ch === '"') { inQ = false; }
+      else { cur += ch; }
+    } else {
+      if (ch === '"') { inQ = true; }
+      else if (ch === ',') { row.push(cur.trim()); cur = ''; }
+      else if (ch === '\n' || (ch === '\r' && text[i+1] === '\n')) {
+        row.push(cur.trim()); rows.push(row); row = []; cur = '';
+        if (ch === '\r') i++;
+      } else { cur += ch; }
+    }
+  }
+  if (cur || row.length) { row.push(cur.trim()); rows.push(row); }
+  return rows;
+}
+
+function numVal(s) {
+  if (!s || s === '#DIV/0!' || s === '%') return 0;
+  return parseInt(s.replace(/[^\d-]/g,'')) || 0;
+}
+
+// ---- FETCH & PARSE PLANILHA ----
+async function fetchDados() {
+  if (loading) return;
+  loading = true;
+  try {
+    const res = await fetch(CSV_URL);
+    if (!res.ok) throw new Error('Erro ao carregar planilha');
+    const text = await res.text();
+    const rows = parseCSV(text);
+    processSheet(rows);
+    renderAll();
+    showStatus('Dados sincronizados');
+  } catch(e) {
+    console.error('Erro fetch:', e);
+    showStatus('Erro ao carregar dados', true);
+  } finally {
+    loading = false;
+  }
+}
+
+function norm(s) { return (s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim(); }
+
+function findMes(val) {
+  const n = norm(val);
+  return MESES.find(m => norm(m) === n) || null;
+}
+
+function processSheet(rows) {
+  // Detectar meses no header (row 0)
+  const header = rows[0] || [];
+  const mesCols = {};
+  for (let c = 1; c < header.length; c++) {
+    const mes = findMes(header[c]);
+    if (mes) mesCols[mes] = c;
+  }
+
+  mesesDisponiveis = Object.keys(mesCols);
+  if (mesesDisponiveis.length === 0) {
+    mesCols['Março'] = 5;
+    mesesDisponiveis = ['Março'];
+  }
+
+  // Labels conhecidos de métricas (não são nomes de corretor)
+  const metricLabels = ['leads','lead','total','atendimento','atendeu','agendou','agendado',
+                        'visita','visitas','visitou','vendas','vgv',''];
+
+  // Mapear label da planilha → campo interno
+  function labelToCampo(lbl) {
+    const l = norm(lbl);
+    if (l.startsWith('lead') || l === 'total') return 'lead';
+    if (l.startsWith('atend')) return 'atend';
+    if (l.startsWith('agend')) return 'agend';
+    if (l.startsWith('visit')) return 'visit';
+    if (l.startsWith('vend')) return 'vend';
+    return null;
+  }
+
+  // Parsear blocos sequencialmente
+  dadosGerais = {};
+  corretores = [];
+  let cid = 1;
+  let i = 1; // pular header
+  let currentBlock = null; // { nome, dados, isTotal }
+
+  function flushBlock() {
+    if (!currentBlock) return;
+    if (currentBlock.isTotal) {
+      for (const [mes, d] of Object.entries(currentBlock.dados)) {
+        dadosGerais[mes] = { ...d };
+      }
+    } else {
+      corretores.push({
+        id: cid++,
+        nome: currentBlock.nome.trim(),
+        ci: (cid - 1) % 6,
+        dados: currentBlock.dados
+      });
+    }
+    currentBlock = null;
+  }
+
+  while (i < rows.length) {
+    const row = rows[i] || [];
+    const cell0 = (row[0] || '').trim();
+    const cell0n = norm(cell0);
+    i++;
+
+    if (!cell0) continue; // linha vazia
+
+    // É um label de métrica?
+    const campo = labelToCampo(cell0);
+
+    if (campo && currentBlock) {
+      // Ler valores para cada mês
+      for (const [mes, col] of Object.entries(mesCols)) {
+        if (!currentBlock.dados[mes]) currentBlock.dados[mes] = {lead:0,atend:0,agend:0,visit:0,vend:0};
+        currentBlock.dados[mes][campo] = numVal(row[col]);
+      }
+    } else if (cell0n === 'total') {
+      // Bloco Total: a própria linha tem os dados de leads
+      flushBlock();
+      currentBlock = { nome: 'Total', dados: {}, isTotal: true };
+      for (const [mes, col] of Object.entries(mesCols)) {
+        if (!currentBlock.dados[mes]) currentBlock.dados[mes] = {lead:0,atend:0,agend:0,visit:0,vend:0};
+        currentBlock.dados[mes].lead = numVal(row[col]);
+      }
+    } else if (cell0n === 'vgv') {
+      // Ignorar VGV
+      continue;
+    } else if (!metricLabels.includes(cell0n)) {
+      // Nome de corretor — novo bloco
+      flushBlock();
+      currentBlock = { nome: cell0, dados: {}, isTotal: false };
+    }
+  }
+  flushBlock();
+
+  // Se não tem Total, calcular dos corretores
+  if (Object.keys(dadosGerais).length === 0) {
+    syncGeralFromCorretores();
+  }
+
+  // Selecionar mês mais recente
+  const mesAtual = new Date().toLocaleString('pt-BR', {month:'long'});
+  const mesCapital = mesAtual.charAt(0).toUpperCase() + mesAtual.slice(1);
+  if (mesesDisponiveis.includes(mesCapital)) {
+    mesG = MESES.indexOf(mesCapital);
+    mesC = mesG;
+  } else if (mesesDisponiveis.length > 0) {
+    const ultimo = mesesDisponiveis[mesesDisponiveis.length - 1];
+    mesG = MESES.indexOf(ultimo);
+    mesC = mesG;
+  }
+}
+
+function showStatus(msg, isErr) {
+  const el = document.getElementById('syncStatus');
+  if (!el) return;
+  el.textContent = msg;
+  el.style.color = isErr ? 'var(--verm)' : 'rgba(196,168,106,0.6)';
+  setTimeout(() => { if (el.textContent === msg) el.textContent = ''; }, 4000);
+}
+
+// ---- NAVIGATION ----
+function showPage(id, el) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  el.classList.add('active');
+  updateSfv();
+}
+
+function updateSfv() {
+  const active = document.querySelector('.page.active');
+  document.getElementById('sfv').textContent = MESES[active?.id==='page-geral' ? mesG : mesC];
+}
+
+function buildMonths() {
+  ['mG','mC'].forEach((id,i) => {
+    const mes = i===0 ? mesG : mesC;
+    document.getElementById(id).innerHTML = MESES.map((m,idx) => {
+      const has = mesesDisponiveis.includes(m);
+      return `<button class="mbtn ${idx===mes?'active':''}" ${has?'':`style="opacity:0.35;"`} onclick="${i===0?'setMesG':'setMesC'}(${idx},this)">${m}</button>`;
+    }).join('');
+  });
+}
+
+function setMesG(i, btn) {
+  mesG = i;
+  document.querySelectorAll('#mG .mbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderGeral(); updateSfv();
+}
+
+function setMesC(i, btn) {
+  mesC = i;
+  document.querySelectorAll('#mC .mbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderCorretores(); updateSfv();
+}
+
+function setMeta(m) {
+  metaG = m;
+  document.getElementById('bPG').classList.toggle('active', m==='padrao');
+  document.getElementById('bTG').classList.toggle('active', m==='tradicional');
+  document.getElementById('mlbl').textContent = m==='padrao' ? 'META PADRÃO' : 'META TRADICIONAL';
+  renderGeral();
+}
+
+function setMetaC(m) {
+  metaC = m;
+  document.getElementById('bPC').classList.toggle('active', m==='padrao');
+  document.getElementById('bTC').classList.toggle('active', m==='tradicional');
+  renderCorretores();
+}
+
+// ---- GERAL ----
+function syncGeralFromCorretores() {
+  MESES.forEach(mes => {
+    let lead=0,atend=0,agend=0,visit=0,vend=0;
+    corretores.forEach(c => {
+      const d = c.dados[mes]||{};
+      lead+=d.lead||0; atend+=d.atend||0; agend+=d.agend||0; visit+=d.visit||0; vend+=d.vend||0;
+    });
+    if (lead||atend||agend||visit||vend) dadosGerais[mes] = {lead,atend,agend,visit,vend};
+  });
+}
+
+function renderGeral() {
+  const mes = MESES[mesG];
+  const dg = dadosGerais[mes] || {lead:0,atend:0,agend:0,visit:0,vend:0};
+
+  // Preencher inputs
+  document.getElementById('gLead').value = dg.lead || '';
+  document.getElementById('gAtend').value = dg.atend || '';
+  document.getElementById('gAgend').value = dg.agend || '';
+  document.getElementById('gVisit').value = dg.visit || '';
+  document.getElementById('gVend').value = dg.vend || '';
+
+  const {lead=0,atend=0,agend=0,visit=0,vend=0} = dg;
+  const m = METAS[metaG];
+  const mAtend = Math.round(lead*m.atend), mAgend = Math.round(lead*m.agend);
+  const mVisit = Math.round(lead*m.visit), mVend  = Math.round(lead*m.vend);
+
+  const pAtend = p(atend,mAtend||1), pAgend = p(agend,mAgend||1);
+  const pVisit = p(visit,mVisit||1), pVend  = p(vend,mVend||1);
+
+  const cards = [
+    {cls:'lead',  lbl:'LEAD',    ico:'◈', val:lead,  meta:lead,   pR:100,    mPct:1},
+    {cls:'atend', lbl:'ATENDEU', ico:'◉', val:atend, meta:mAtend, pR:pAtend, mPct:m.atend},
+    {cls:'agend', lbl:'AGENDOU', ico:'◎', val:agend, meta:mAgend, pR:pAgend, mPct:m.agend},
+    {cls:'visit', lbl:'VISITOU', ico:'⌂', val:visit, meta:mVisit, pR:pVisit, mPct:m.visit},
+    {cls:'vend',  lbl:'VENDAS',  ico:'◆', val:vend,  meta:mVend,  pR:pVend,  mPct:m.vend},
+  ];
+
+  document.getElementById('resumo').innerHTML = cards.map((c,i) => {
+    const isFirst = i===0;
+    const realPct = isFirst ? 100 : c.pR;
+    const cls = isFirst ? 'g' : bCls(realPct, c.mPct);
+    const txt = isFirst ? '100% da meta' : `${f(realPct)} da meta`;
+    return `
+      <div class="rc ${c.cls}">
+        <div class="rc-ico">${c.ico}</div>
+        <div class="rc-lbl">${c.lbl}</div>
+        <div class="rc-val">${c.val}</div>
+        <div class="rc-meta">Meta · ${c.meta}</div>
+        <span class="bdg ${cls}">${txt}</span>
+      </div>`;
+  }).join('');
+
+  const steps = [
+    {lbl:'Lead',    val:lead,  meta:lead,   prev:lead,  mPct:1,       cls:'ft-lead',  arr:'lead'},
+    {lbl:'Atendeu', val:atend, meta:mAtend, prev:lead,  mPct:m.atend, cls:'ft-atend', arr:'atend'},
+    {lbl:'Agendou', val:agend, meta:mAgend, prev:atend, mPct:m.agend, cls:'ft-agend', arr:'agend'},
+    {lbl:'Visitou', val:visit, meta:mVisit, prev:agend, mPct:m.visit, cls:'ft-visit', arr:'visit'},
+    {lbl:'Vendas',  val:vend,  meta:mVend,  prev:visit, mPct:m.vend,  cls:'ft-vend',  arr:null},
+  ];
+
+  let html = '';
+  steps.forEach((s,i) => {
+    if (i>0) html += `<div class="farrow fa-${steps[i-1].arr}"></div>`;
+    const rp = p(s.val, s.prev);
+    const bc = i===0 ? 'g' : bCls(rp, s.mPct);
+    html += `
+      <div class="frow">
+        <div class="ftrap ${s.cls}">
+          <div class="ft-lbl">${s.lbl}</div>
+          <div class="ft-right">
+            <div>
+              <div class="ft-num">${s.val}</div>
+              ${i>0?`<div class="ft-of">/ ${s.meta}</div>`:''}
+            </div>
+            <div style="text-align:center;">
+              <span class="ftbdg ${bc}">${i===0?'100%':f(rp)}</span>
+              ${i>0?`<div class="ft-meta">meta ${f(s.mPct*100)}</div>`:''}
+            </div>
+          </div>
+        </div>
+      </div>`;
+  });
+  document.getElementById('farea').innerHTML = html;
+}
+
+// ---- CORRETORES ----
+function getDC(c) {
+  const mes = MESES[mesC];
+  if (!c.dados[mes]) c.dados[mes] = {lead:0,atend:0,agend:0,visit:0,vend:0};
+  return c.dados[mes];
+}
+
+function renderCorretores() {
+  document.getElementById('chips').innerHTML = corretores.length===0
+    ? '<span style="font-family:DM Mono,monospace;font-size:10px;color:#bbb;letter-spacing:1px;">CARREGANDO CORRETORES...</span>'
+    : corretores.map(c=>`
+        <div class="chip">
+          <div class="av av-${c.ci}" style="width:20px;height:20px;font-size:9px;">${ini(c.nome)}</div>
+          ${c.nome}
+        </div>`).join('');
+
+  if (corretores.length===0) {
+    document.getElementById('cgrid').innerHTML='<div class="empty-state" style="grid-column:1/-1;">Carregando dados da planilha...</div>';
+    return;
+  }
+
+  const m = METAS[metaC];
+  document.getElementById('cgrid').innerHTML = corretores.map(c => {
+    const d = getDC(c);
+    const {lead=0,atend=0,agend=0,visit=0,vend=0} = d;
+    const mAtend=Math.round(lead*m.atend), mAgend=Math.round(lead*m.agend);
+    const mVisit=Math.round(lead*m.visit), mVend=Math.round(lead*m.vend);
+
+    const rows = [
+      {lbl:'Lead',    real:lead,  meta:lead,   pR:100,               mPct:1},
+      {lbl:'Atendeu', real:atend, meta:mAtend, pR:p(atend,lead),     mPct:m.atend},
+      {lbl:'Agendou', real:agend, meta:mAgend, pR:p(agend,atend||1), mPct:m.agend},
+      {lbl:'Visitou', real:visit, meta:mVisit, pR:p(visit,agend||1), mPct:m.visit},
+      {lbl:'Vendas',  real:vend,  meta:mVend,  pR:p(vend,visit||1),  mPct:m.vend},
+    ];
+
+    return `
+      <div class="ccard ${vend===0?'ns':''}" id="cc-${c.id}">
+        <div class="ccard-top" style="${vend>0?'background:linear-gradient(90deg,var(--ouro),var(--ouro2))':'background:var(--areia2)'}"></div>
+        <div class="cc-head">
+          <div class="cc-left">
+            <div class="av av-${c.ci}">${ini(c.nome)}</div>
+            <div>
+              <div class="ccname">${c.nome}</div>
+              <div class="ccsub" id="csub-${c.id}">${lead} leads</div>
+            </div>
+          </div>
+          <div class="ccvend ${vend===0?'z':''}" id="cvend-${c.id}">${vend}<sup>vd</sup></div>
+        </div>
+        <div class="cc-tbl">
+          <div class="ccrow">
+            <span class="rl"></span>
+            <span class="rh">REAL</span><span class="rh">META</span>
+            <span class="rh">% REAL</span><span class="rh">% META</span>
+          </div>
+          <div id="ctbl-${c.id}">
+            ${rows.map((r,i)=>`
+              <div class="ccrow">
+                <span class="rl">${r.lbl}</span>
+                <span class="rv">${r.real}</span>
+                <span class="rm">${r.meta}</span>
+                <span class="rp">${i===0?'<span class="ps g">100%</span>':`<span class="ps ${bCls(r.pR,r.mPct)}">${f(r.pR)}</span>`}</span>
+                <span class="rmt">${f(r.mPct*100)}</span>
+              </div>`).join('')}
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function renderAll() {
+  buildMonths();
+  renderGeral();
+  renderCorretores();
+  updateSfv();
+}
+
+// INIT — carregar da planilha
+fetchDados();
+setInterval(fetchDados, REFRESH_MS);
+</script>
+</body>
+</html>
